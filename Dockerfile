@@ -7,11 +7,9 @@ RUN wget https://s3-sa-east-1.amazonaws.com/it-util/sfw/Mulesoft/esb.tar.gz &&  
 WORKDIR /mule-esb
 
 
-
 EXPOSE 8081
 EXPOSE 5701
 EXPOSE 443
-
 
 
 CMD ["/mule-esb/vertigo.sh", "run"]
