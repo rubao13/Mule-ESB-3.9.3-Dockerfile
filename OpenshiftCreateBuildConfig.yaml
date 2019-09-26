@@ -1,0 +1,40 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: docker-build
+  namespace: poc-comgas
+  labels:
+    name: docker-build
+spec:
+  triggers:
+    - type: GitHub
+      github:
+        secret: secret101
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/rubao13/Mule-ESB-3.9.3-Dockerfile.git'
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'muleesb:3.9.3'
+        namespace: poc-comgas
+      env:
+        - name: CLOUDTOKEN
+          value: acesse-anypoint-gere
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'origin-muleesb:3.9.3'
+  postCommit:
+    args:
+      - bundle
+      - exec
+      - rake
+      - test
+
