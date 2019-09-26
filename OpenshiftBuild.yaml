@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: Mule393
+  namespace: poc-comgas
+spec:
+  source:
+    git:
+      ref: master
+      uri: 'https://github.com/rubao13/Mule-ESB-3.9.3-Dockerfile.git'
+    type: Git
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'mule:3.9.3'
+        namespace: openshift
+      env: []
+  triggers:
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
