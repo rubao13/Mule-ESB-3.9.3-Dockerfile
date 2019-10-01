@@ -4,9 +4,9 @@ ENV CLOUDTOKEN Deve_Ser_Passado_Externamente
 ENV ESBNAME $HOSTNAME
 
 
-RUN mkdir /home/mule && chown -R 1001:1001 /home/mule
+RUN mkdir /home/mule && chown -R 1000170000:1000170000 /home/mule
 
-USER 1001
+USER 1000170000
 
 
 WORKDIR /home/mule
