@@ -3,18 +3,19 @@ FROM openjdk:8u171-jdk
 ENV CLOUDTOKEN Deve_Ser_Passado_Externamente
 ENV ESBNAME $HOSTNAME
 
-RUN wget https://s3-sa-east-1.amazonaws.com/it-util/sfw/Mulesoft/esb.tar.gz && tar -xf esb.tar.gz && rm esb.tar.gz
-WORKDIR /mule-esb
+RUN groupadd -g 1000070000 mule
+RUN useradd -m -g mule -u 999 --system mule
 
-# NON-ROOT
-RUN groupadd -g 1000070000 mule && \
-    useradd -g mule -u 1000070000 --system mule && \
-    chown -R mule:mule /mule-esb
+USER mule
+WORKDIR /home/mule
+RUN wget https://it-util.s3-sa-east-1.amazonaws.com/sfw/Mulesoft/mule-ee-distribution-standalone-3.9.3-hf1.zip &&  unzip mule-ee-distribution-standalone-3.9.3-hf1.zip && rm mule-ee-distribution-standalone-3.9.3-hf1.zip
+
+WORKDIR /home/mule/mule-enterprise-standalone-3.9.3-hf1/bin
+RUN wget https://it-util.s3-sa-east-1.amazonaws.com/sfw/Mulesoft/start_mule.sh
+RUN chmod +x start_mule.sh
 
 EXPOSE 8081
 EXPOSE 5701
 EXPOSE 443
 
-USER mule
-
-CMD ["/mule-esb/vertigo.sh", "run"]
+CMD ["./start_mule.sh"]
