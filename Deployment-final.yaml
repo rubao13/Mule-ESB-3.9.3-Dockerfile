@@ -1,0 +1,108 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: '2019-10-01T15:21:29Z'
+  generation: 15
+  labels:
+    app: mule-comgas
+  name: mule-comgas
+  namespace: poc-comgas
+  resourceVersion: '88985411'
+  selfLink: >-
+    /apis/apps.openshift.io/v1/namespaces/poc-comgas/deploymentconfigs/mule-comgas
+  uid: 24a8d781-e45f-11e9-b62e-0050568b64e9
+spec:
+  replicas: 1
+  selector:
+    app: mule-comgas
+    deploymentconfig: mule-comgas
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+      creationTimestamp: null
+      labels:
+        app: mule-comgas
+        deploymentconfig: mule-comgas
+    spec:
+      containers:
+        - env:
+            - name: CLOUDTOKEN
+              value: f572d75b-df93-4f48-a595-231ef3b38f80---95660
+            - name: ESBNAME
+              value: mule13
+          image: >-
+            rubens/mule-esb@sha256:5e33cbaf6a738829493061c98bbc5fedd6beaa45dcb28f328efd30ee6fdcbd3d
+          imagePullPolicy: IfNotPresent
+          name: mule-comgas
+          ports:
+            - containerPort: 443
+              protocol: TCP
+            - containerPort: 5701
+              protocol: TCP
+            - containerPort: 8081
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 2G
+            requests:
+              cpu: '1'
+              memory: 1G
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - mule-comgas
+        from:
+          kind: ImageStreamTag
+          name: 'mule-comgas:latest'
+          namespace: poc-comgas
+        lastTriggeredImage: >-
+          rubens/mule-esb@sha256:5e33cbaf6a738829493061c98bbc5fedd6beaa45dcb28f328efd30ee6fdcbd3d
+      type: ImageChange
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2019-10-01T18:05:38Z'
+      lastUpdateTime: '2019-10-01T18:05:38Z'
+      message: Deployment config has minimum availability.
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2019-10-01T18:05:34Z'
+      lastUpdateTime: '2019-10-01T18:05:39Z'
+      message: replication controller "mule-comgas-12" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: 'True'
+      type: Progressing
+  details:
+    causes:
+      - type: ConfigChange
+    message: config change
+  latestVersion: 12
+  observedGeneration: 15
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1
