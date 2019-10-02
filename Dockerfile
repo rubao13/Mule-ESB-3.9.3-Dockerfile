@@ -1,7 +1,6 @@
 FROM openjdk:8u171-jdk
 
 ENV CLOUDTOKEN Deve_Ser_Passado_Externamente
-ENV ESBNAME $HOSTNAME
 
 
 RUN mkdir /home/mule && chown -R 1000170000:1000170000 /home/mule
